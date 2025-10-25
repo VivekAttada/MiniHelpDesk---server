@@ -6,7 +6,7 @@
     "module": "CommonJS",
     "target": "ES2022",
     "moduleResolution": "Node",
-    "types": [],
+    "types": ["node"],
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
@@ -18,13 +18,10 @@
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
     "strict": true,
-    "jsx": "react-jsx",
     "esModuleInterop": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "skipLibCheck": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*"]
 }
