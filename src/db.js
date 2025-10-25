@@ -1,19 +1,19 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
 // Enums
-export enum Priority {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-}
+const Priority = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+};
 
-export enum Status {
-  OPEN = 'OPEN',
-  IN_PROGRESS = 'IN_PROGRESS',
-  CLOSED = 'CLOSED',
-}
+const Status = {
+  OPEN: 'OPEN',
+  IN_PROGRESS: 'IN_PROGRESS',
+  CLOSED: 'CLOSED',
+};
 
 // Comment Schema
 const commentSchema = new Schema(
@@ -52,11 +52,11 @@ const ticketSchema = new Schema(
 );
 
 // Models
-export const Ticket = mongoose.model('Ticket', ticketSchema);
-export const Comment = mongoose.model('Comment', commentSchema);
+const Ticket = mongoose.model('Ticket', ticketSchema);
+const Comment = mongoose.model('Comment', commentSchema);
 
 // Connect to MongoDB
-export async function connectDB(uri: string) {
+async function connectDB(uri) {
   try {
     await mongoose.connect(uri);
     console.log('✅ Connected to MongoDB');
@@ -67,7 +67,16 @@ export async function connectDB(uri: string) {
 }
 
 // Disconnect from MongoDB
-export async function disconnectDB() {
+async function disconnectDB() {
   await mongoose.disconnect();
   console.log('Disconnected from MongoDB');
 }
+
+module.exports = {
+  Priority,
+  Status,
+  Ticket,
+  Comment,
+  connectDB,
+  disconnectDB,
+};

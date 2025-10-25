@@ -1,10 +1,8 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import cors from 'cors';
-import { connectDB } from './db';
-import routes from './routes';
-
-dotenv.config();
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const { connectDB } = require('./db');
+const routes = require('./routes');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -18,7 +16,7 @@ app.use(express.json());
 app.use('/api', routes);
 
 // Error handling middleware
-app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+app.use((err, _req, res, _next) => {
   console.error('Error:', err);
   res.status(500).json({ error: 'Internal server error' });
 });

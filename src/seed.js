@@ -1,7 +1,5 @@
-import dotenv from 'dotenv';
-import { connectDB, disconnectDB, Ticket, Comment } from './db';
-
-dotenv.config();
+require('dotenv').config();
+const { connectDB, disconnectDB, Ticket, Comment } = require('./db');
 
 const seedData = async () => {
   try {

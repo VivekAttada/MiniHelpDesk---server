@@ -1,20 +1,20 @@
-import { Router, Request, Response } from 'express';
-import { Ticket, Comment } from './db';
-import {
+const { Router } = require('express');
+const { Ticket, Comment } = require('./db');
+const {
   TicketCreateSchema,
   TicketUpdateSchema,
   CommentCreateSchema,
   TicketQuerySchema,
-} from './validators';
-import { z } from 'zod';
+} = require('./validators');
+const { z } = require('zod');
 
 const router = Router();
 
 // Helper function for validation errors
-const handleValidationError = (error: z.ZodError, res: Response): Response => {
+const handleValidationError = (error, res) => {
   return res.status(422).json({
     error: 'Validation failed',
-    issues: error.issues.map((e: z.ZodIssue) => ({
+    issues: error.issues.map((e) => ({
       path: e.path.join('.'),
       message: e.message,
     })),
@@ -24,11 +24,11 @@ const handleValidationError = (error: z.ZodError, res: Response): Response => {
 // ===== TICKET ROUTES =====
 
 // GET /api/tickets - List tickets with optional filters
-router.get('/tickets', async (req: Request, res: Response): Promise<void> => {
+router.get('/tickets', async (req, res) => {
   try {
     const query = TicketQuerySchema.parse(req.query);
 
-    const filter: any = {};
+    const filter = {};
 
     // Add status filter if provided
     if (query.status) {
@@ -57,7 +57,7 @@ router.get('/tickets', async (req: Request, res: Response): Promise<void> => {
 });
 
 // GET /api/tickets/:id - Get single ticket
-router.get('/tickets/:id', async (req: Request, res: Response): Promise<void> => {
+router.get('/tickets/:id', async (req, res) => {
   try {
     const ticket = await Ticket.findById(req.params.id);
 
@@ -73,7 +73,7 @@ router.get('/tickets/:id', async (req: Request, res: Response): Promise<void> =>
 });
 
 // POST /api/tickets - Create new ticket
-router.post('/tickets', async (req: Request, res: Response): Promise<void> => {
+router.post('/tickets', async (req, res) => {
   try {
     const data = TicketCreateSchema.parse(req.body);
 
@@ -95,7 +95,7 @@ router.post('/tickets', async (req: Request, res: Response): Promise<void> => {
 });
 
 // PATCH /api/tickets/:id - Update ticket
-router.patch('/tickets/:id', async (req: Request, res: Response): Promise<void> => {
+router.patch('/tickets/:id', async (req, res) => {
   try {
     const data = TicketUpdateSchema.parse(req.body);
 
@@ -121,7 +121,7 @@ router.patch('/tickets/:id', async (req: Request, res: Response): Promise<void> 
 });
 
 // DELETE /api/tickets/:id - Delete ticket
-router.delete('/tickets/:id', async (req: Request, res: Response): Promise<void> => {
+router.delete('/tickets/:id', async (req, res) => {
   try {
     const ticket = await Ticket.findByIdAndDelete(req.params.id);
 
@@ -142,7 +142,7 @@ router.delete('/tickets/:id', async (req: Request, res: Response): Promise<void>
 // ===== COMMENT ROUTES =====
 
 // GET /api/tickets/:id/comments - List comments for a ticket
-router.get('/tickets/:id/comments', async (req: Request, res: Response): Promise<void> => {
+router.get('/tickets/:id/comments', async (req, res) => {
   try {
     const comments = await Comment.find({ ticketId: req.params.id }).sort({ createdAt: 1 });
     res.json(comments);
@@ -152,7 +152,7 @@ router.get('/tickets/:id/comments', async (req: Request, res: Response): Promise
 });
 
 // POST /api/tickets/:id/comments - Add comment to ticket
-router.post('/tickets/:id/comments', async (req: Request, res: Response): Promise<void> => {
+router.post('/tickets/:id/comments', async (req, res) => {
   try {
     // First check if ticket exists
     const ticket = await Ticket.findById(req.params.id);
@@ -181,8 +181,8 @@ router.post('/tickets/:id/comments', async (req: Request, res: Response): Promis
 });
 
 // Health check endpoint
-router.get('/health', (_req: Request, res: Response) => {
+router.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
-export default router;
+module.exports = router;
