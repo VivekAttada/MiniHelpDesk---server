@@ -9,7 +9,11 @@ const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mini-helpdesk';
 
 // Middleware
-app.use(cors());
+app.use(cors(
+  {
+    origin:["https://minihelpdesksite.netlify.app/tickets"]
+  }
+));
 app.use(express.json());
 
 // Routes
